@@ -1,6 +1,6 @@
 package org.company.springcloud.msvc.courses.service;
 
-import org.company.springcloud.msvc.courses.entity.Course;
+import org.company.springcloud.msvc.courses.models.entity.Course;
 import org.company.springcloud.msvc.courses.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

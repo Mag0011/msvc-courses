@@ -1,7 +1,7 @@
 package org.company.springcloud.msvc.courses.controller;
 
 import org.company.springcloud.msvc.courses.utils.RequestValidationService;
-import org.company.springcloud.msvc.courses.entity.Course;
+import org.company.springcloud.msvc.courses.models.entity.Course;
 import org.company.springcloud.msvc.courses.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
