@@ -4,7 +4,7 @@ import org.company.springcloud.msvc.courses.models.User;
 import javax.persistence.*;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,8 +28,16 @@ public class Course {
     private List<User> users;
 
     public Course(){
-        userCourses = Collections.emptyList();
-        users = Collections.emptyList();
+        userCourses = new ArrayList<>();
+        users = new ArrayList<>();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -40,12 +48,20 @@ public class Course {
         this.name = name;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public List<UserCourse> getUserCourses() {
+        return userCourses;
     }
 
-    public Long getId() {
-        return id;
+    public void setUserCourses(List<UserCourse> userCourses) {
+        this.userCourses = userCourses;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     public void addUserCourse(UserCourse course){

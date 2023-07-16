@@ -1,5 +1,7 @@
 package org.company.springcloud.msvc.courses.controller;
 
+import feign.FeignException;
+import org.company.springcloud.msvc.courses.models.User;
 import org.company.springcloud.msvc.courses.utils.RequestValidationService;
 import org.company.springcloud.msvc.courses.models.entity.Course;
 import org.company.springcloud.msvc.courses.service.CourseService;
@@ -10,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,6 +34,12 @@ public class CourseController {
     @GetMapping("/getCourseById/{id}")
     public ResponseEntity<Course> getCourseById(@PathVariable(name = "id") Long id){
         Optional<Course> optionalCourse = courseService.findCourseById(id);
+        return optionalCourse.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/getCourseCompleteDetail/{id}")
+    public ResponseEntity<Course> getCourseByUsers(@PathVariable(name = "id") Long id){
+        Optional<Course> optionalCourse = courseService.findCourseCompleteDetail(id);
         return optionalCourse.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -69,6 +78,51 @@ public class CourseController {
             return ResponseEntity.noContent().build();
         }
         return  ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("assignUser/{course_id}")
+    public ResponseEntity<?> assignUser(@RequestBody User user, @PathVariable Long course_id){
+        //TODO: move to ExceptionHandler
+        Optional<User> optUser;
+        try{
+            optUser = courseService.assignUser(user, course_id);
+        }catch(FeignException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("message","User with id" + user.getId() + "[ " + ex.getMessage() + " ]" ));
+        }
+        if(optUser.isPresent()){
+            return ResponseEntity.status(HttpStatus.OK).body(optUser.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("createUser/{course_id}")
+    public ResponseEntity<?> createUser(@RequestBody User user, @PathVariable Long course_id){
+        //TODO: move to ExceptionHandler
+        Optional<User> optUser;
+        try{
+            optUser = courseService.createUser(user, course_id);
+        }catch(FeignException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("message","Not possible to create [ " + ex.getMessage() + " ]" ));
+        }
+        if(optUser.isPresent()){
+            return ResponseEntity.status(HttpStatus.CREATED).body(optUser.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("deleteUser/{course_id}")
+    public ResponseEntity<?> deleteUser(@RequestBody User user, @PathVariable Long course_id){
+        //TODO: move to ExceptionHandler
+        Optional<User> optUser;
+        try{
+            optUser = courseService.unassignUser(user, course_id);
+        }catch(FeignException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("message","Not possible to create [ " + ex.getMessage() + " ]" ));
+        }
+        if(optUser.isPresent()){
+            return ResponseEntity.status(HttpStatus.OK).body(optUser.get());
+        }
+        return ResponseEntity.notFound().build();
     }
 
 }

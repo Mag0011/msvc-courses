@@ -12,6 +12,8 @@ public interface CourseService {
 
     Optional<Course> findCourseById(Long id);
 
+    Optional<Course> findCourseCompleteDetail(Long id);
+
     Course saveCourse(Course course);
 
     void deleteCourse(Course course);
@@ -20,7 +22,6 @@ public interface CourseService {
 
     Optional<User> createUser(User user, Long courseId);
 
-    Optional<User> unnassignUser(User user, Long courseId);
-
+    Optional<User> unassignUser(User user, Long courseId);
 
 }
