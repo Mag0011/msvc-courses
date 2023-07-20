@@ -16,7 +16,7 @@ public interface UserClientRest {
     @PostMapping("/createUser")
     User createUser( @RequestBody User user);
 
-    @PostMapping("/getUsersByCourse")
+    @PostMapping("/getUsersByCourse")// fixme: why only accepts PostMappings and not Get...
     List<User> getUsersByCourse(@RequestBody ListUsersByCourseRequest request);
 
 }

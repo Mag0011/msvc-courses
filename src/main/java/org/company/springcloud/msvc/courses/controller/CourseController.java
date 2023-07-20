@@ -110,8 +110,8 @@ public class CourseController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("deleteUser/{course_id}")
-    public ResponseEntity<?> deleteUser(@RequestBody User user, @PathVariable Long course_id){
+    @DeleteMapping("unassignUser/{course_id}")
+    public ResponseEntity<?> deleteUser(@RequestBody User user, @PathVariable("course_id") Long course_id){
         //TODO: move to ExceptionHandler
         Optional<User> optUser;
         try{
@@ -124,5 +124,12 @@ public class CourseController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @DeleteMapping("deleteUser/{user_id}")
+    public ResponseEntity<?> deleteUserCourseById(@PathVariable("user_id") Long id){
+        courseService.deleteUserCourseById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

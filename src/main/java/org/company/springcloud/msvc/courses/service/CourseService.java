@@ -24,4 +24,6 @@ public interface CourseService {
 
     Optional<User> unassignUser(User user, Long courseId);
 
+    void deleteUserCourseById(Long id);
+
 }
