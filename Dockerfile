@@ -9,6 +9,7 @@ RUN ./mvnw clean package -DskipTests
 FROM openjdk:11-ea-28-jdk
 EXPOSE 8002
 WORKDIR /app
+RUN mkdir ./logs
 COPY --from=builder /app/msvc-courses/target/msvc-courses-0.0.1-SNAPSHOT.jar .
 CMD ["java", "-jar", "msvc-courses-0.0.1-SNAPSHOT.jar"]
 
