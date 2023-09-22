@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(value = "msvc-users", url = "user-service:8001")
+@FeignClient(value = "msvc-users", url = "${msvc.user.url}")
 public interface UserClientRest {
 
     @GetMapping("/getById/{id}")
