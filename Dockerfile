@@ -1,3 +1,4 @@
+FROM --platform=linux/amd64 python:3.7-alpine
 FROM openjdk:11-ea-28-jdk as builder
 ARG MSVC_NAME=msvc-courses
 WORKDIR /app/$MSVC_NAME
