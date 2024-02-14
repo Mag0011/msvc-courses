@@ -6,16 +6,14 @@ import org.company.springcloud.msvc.courses.utils.RequestValidationService;
 import org.company.springcloud.msvc.courses.models.entity.Course;
 import org.company.springcloud.msvc.courses.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class CourseController {
@@ -26,9 +24,16 @@ public class CourseController {
     @Autowired
     private RequestValidationService requestValidationService;
 
+    @Autowired
+    private Environment env;
+
     @GetMapping("/getAllCourses")
-    public List<Course> getAllCourses(){
-        return courseService.listAllCourses();
+    public ResponseEntity<Map<String, Object>> getAllCourses(){
+        Map<String, Object> body = new HashMap<>();
+        body.put("courses", courseService.listAllCourses());
+        body.put("env", env.getProperty("config.text"));
+        body.put("pod_info", env.getProperty("MY_POD_NAME") + ":" + env.getProperty("MY_POD_IP"));
+        return ResponseEntity.ok(body);
     }
 
     @GetMapping("/getCourseById/{id}")
